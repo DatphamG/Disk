@@ -5,6 +5,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using DISK1.Controls;
+using System.Collections.Generic;
 
 namespace DISK1
 {
@@ -111,6 +113,12 @@ namespace DISK1
                 txtProgressPercent.Text = "100%";
                 txtProgressInfo.Text = "✓ Scan completed!";
                 txtStatus.Text = $"✓ Completed: {scannedFiles} files scanned, Total size: {rootItem?.SizeFormatted ?? "0 B"}";
+
+                // Update Chart
+                if (rootItem != null)
+                {
+                    UpdateChart(rootItem);
+                }
 
                 MessageBox.Show(
                     $"Scan completed successfully!\n\n" +
@@ -314,6 +322,72 @@ namespace DISK1
                     SortBySize(item.Children);  // Sort recursively
                 }
             }
+        }
+
+        private void UpdateChart(FileSystemItem root)
+        {
+            if (root.Children == null || root.Children.Count == 0) return;
+
+            var items = root.Children.OrderByDescending(x => x.Size).ToList();
+            var slices = new List<PieSlice>();
+            
+            // Colors from palette
+            var colors = new[]
+            {
+                (SolidColorBrush)new BrushConverter().ConvertFrom("#F38181"),
+                (SolidColorBrush)new BrushConverter().ConvertFrom("#FCE38A"),
+                (SolidColorBrush)new BrushConverter().ConvertFrom("#EAFFD0"),
+                (SolidColorBrush)new BrushConverter().ConvertFrom("#95E1D3"),
+                (SolidColorBrush)new BrushConverter().ConvertFrom("#A8D8EA"),
+                (SolidColorBrush)new BrushConverter().ConvertFrom("#AA96DA"),
+                (SolidColorBrush)new BrushConverter().ConvertFrom("#FCBAD3"),
+            };
+
+            long totalSize = root.Size;
+            long processedSize = 0;
+
+            // Take top 5
+            int takeCount = Math.Min(5, items.Count);
+            for (int i = 0; i < takeCount; i++)
+            {
+                var item = items[i];
+                slices.Add(new PieSlice
+                {
+                    Label = item.Name,
+                    Value = item.Size,
+                    FormattedValue = item.SizeFormatted,
+                    Color = colors[i % colors.Length]
+                });
+                processedSize += item.Size;
+            }
+
+            // Other
+            long otherSize = totalSize - processedSize;
+            if (otherSize > 0)
+            {
+                slices.Add(new PieSlice
+                {
+                    Label = "Others",
+                    Value = otherSize,
+                    FormattedValue = FormatSize(otherSize),
+                    Color = (SolidColorBrush)new BrushConverter().ConvertFrom("#888888")
+                });
+            }
+
+            diskPieChart.Draw(slices);
+        }
+
+        private string FormatSize(long bytes)
+        {
+            string[] suffixes = { "B", "KB", "MB", "GB", "TB" };
+            int counter = 0;
+            decimal number = (decimal)bytes;
+            while (Math.Round(number / 1024) >= 1)
+            {
+                number = number / 1024;
+                counter++;
+            }
+            return string.Format("{0:n1} {1}", number, suffixes[counter]);
         }
     }
 }
