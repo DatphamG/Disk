@@ -10,3 +10,6 @@ obj/
 
 # Build logs
 build_*.txt
+
+# WPF Designer
+*_wpftmp.csproj

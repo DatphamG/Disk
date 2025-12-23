@@ -341,39 +341,59 @@
                                                 <!-- Hover Actions -->
                                                 <StackPanel Grid.Column="1" 
                                                             Orientation="Horizontal" 
-                                                            Margin="20,0,0,0"
+                                                            Margin="12,0,0,0"
                                                             VerticalAlignment="Center"
                                                             Visibility="Visible">
                                                     
-                                                    <Button Content="Open"
-                                                            FontSize="10"
-                                                            Padding="8,4"
-                                                            Margin="0,0,8,0"
-                                                            Background="#0D7377"
-                                                            Foreground="White"
+                                                    <!-- Open Button (Folder Icon) -->
+                                                    <Button ToolTip="Open Item"
+                                                            Margin="0,0,6,0"
+                                                            Background="Transparent"
                                                             BorderThickness="0"
                                                             Cursor="Hand"
-                                                            Click="BtnOpen_Click">
-                                                        <Button.Resources>
-                                                            <Style TargetType="Border">
-                                                                <Setter Property="CornerRadius" Value="4"/>
-                                                            </Style>
-                                                        </Button.Resources>
+                                                            Click="BtnOpen_Click"
+                                                            Padding="4">
+                                                        <Button.Template>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                                                                    <Path Data="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z" 
+                                                                          Fill="#14FFEC" 
+                                                                          Stretch="Uniform" 
+                                                                          Width="16" 
+                                                                          Height="16"/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#2D2D30"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Button.Template>
                                                     </Button>
 
-                                                    <Button Content="Delete"
-                                                            FontSize="10"
-                                                            Padding="8,4"
-                                                            Background="#C70039"
-                                                            Foreground="White"
+                                                    <!-- Delete Button (X Icon) -->
+                                                    <Button ToolTip="Delete Item"
+                                                            Background="Transparent"
                                                             BorderThickness="0"
                                                             Cursor="Hand"
-                                                            Click="BtnDelete_Click">
-                                                        <Button.Resources>
-                                                            <Style TargetType="Border">
-                                                                <Setter Property="CornerRadius" Value="4"/>
-                                                            </Style>
-                                                        </Button.Resources>
+                                                            Click="BtnDelete_Click"
+                                                            Padding="4">
+                                                        <Button.Template>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                                                                    <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" 
+                                                                          Fill="#FF4444" 
+                                                                          Stretch="Uniform" 
+                                                                          Width="16" 
+                                                                          Height="16"/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#2D2D30"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Button.Template>
                                                     </Button>
                                                 </StackPanel>
                                             </Grid>
