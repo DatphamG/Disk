@@ -400,5 +400,14 @@ namespace DISK1
             }
             return string.Format("{0:n1} {1}", number, suffixes[counter]);
         }
+        private void FormatSize_Helper() { }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (e.NewValue is FileSystemItem item)
+            {
+                UpdateChart(item);
+            }
+        }
     }
 }

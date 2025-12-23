@@ -320,7 +320,8 @@
                             <ScrollViewer VerticalScrollBarVisibility="Auto"
                                           HorizontalScrollBarVisibility="Auto">
                                 <TreeView x:Name="treeViewFiles" 
-                                          Style="{StaticResource DarkTreeViewStyle}">
+                                          Style="{StaticResource DarkTreeViewStyle}"
+                                          SelectedItemChanged="TreeView_SelectedItemChanged">
                                     <TreeView.ItemTemplate>
                                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                             <Grid Margin="0,2">

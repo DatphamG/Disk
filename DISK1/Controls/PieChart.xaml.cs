@@ -92,9 +92,10 @@ namespace DISK1.Controls
                     Margin = new Thickness(0, 0, 8, 0)
                 });
                 
+                double percentage = (slice.Value / total) * 100;
                 var textBlock = new TextBlock 
                 { 
-                    Text = slice.Label, 
+                    Text = $"{slice.Label} ({percentage:0.#}%)", 
                     Foreground = Brushes.White, 
                     FontSize = 11,
                     TextTrimming = TextTrimming.CharacterEllipsis,
