@@ -7,3 +7,6 @@ obj/
 *.suo
 *.userosscache
 *.sln.docstates
+
+# Build logs
+build_*.txt

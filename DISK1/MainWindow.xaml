@@ -344,6 +344,37 @@
                                                             Margin="20,0,0,0"
                                                             VerticalAlignment="Center"
                                                             Visibility="Visible">
+                                                    
+                                                    <Button Content="Open"
+                                                            FontSize="10"
+                                                            Padding="8,4"
+                                                            Margin="0,0,8,0"
+                                                            Background="#0D7377"
+                                                            Foreground="White"
+                                                            BorderThickness="0"
+                                                            Cursor="Hand"
+                                                            Click="BtnOpen_Click">
+                                                        <Button.Resources>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="CornerRadius" Value="4"/>
+                                                            </Style>
+                                                        </Button.Resources>
+                                                    </Button>
+
+                                                    <Button Content="Delete"
+                                                            FontSize="10"
+                                                            Padding="8,4"
+                                                            Background="#C70039"
+                                                            Foreground="White"
+                                                            BorderThickness="0"
+                                                            Cursor="Hand"
+                                                            Click="BtnDelete_Click">
+                                                        <Button.Resources>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="CornerRadius" Value="4"/>
+                                                            </Style>
+                                                        </Button.Resources>
+                                                    </Button>
                                                 </StackPanel>
                                             </Grid>
                                         </HierarchicalDataTemplate>
