@@ -31,8 +31,11 @@ namespace DISK1
         }
 
         // Display name với icon và size
+        public double Percentage { get; set; } = 0;
+
+        // Display name với icon, size và percentage
         public string DisplayName => IsDirectory 
-            ? $"📁 {Name} ({SizeFormatted})" 
-            : $"📄 {Name} ({SizeFormatted})";
+            ? $"📁 {Name} ({SizeFormatted} - {Percentage:0.00}%)" 
+            : $"📄 {Name} ({SizeFormatted} - {Percentage:0.00}%)";
     }
 }

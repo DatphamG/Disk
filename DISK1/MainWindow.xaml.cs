@@ -228,6 +228,16 @@ namespace DISK1
             catch { }
 
             item.Size = totalSize;
+
+            // Calculate percentage for children
+            if (totalSize > 0 && item.Children != null)
+            {
+                foreach (var child in item.Children)
+                {
+                    child.Percentage = (double)child.Size / totalSize * 100;
+                }
+            }
+
             return item;
         }
 
