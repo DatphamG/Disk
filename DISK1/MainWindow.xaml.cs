@@ -163,13 +163,15 @@ namespace DISK1
         }
 
         // Deep scan directory recursively
-        private FileSystemItem ScanDirectory(DirectoryInfo directory)
+        private FileSystemItem ScanDirectory(DirectoryInfo directory, FileSystemItem? parent = null)
         {
             var item = new FileSystemItem
             {
                 Name = directory.Name,
                 FullPath = directory.FullName,
                 IsDirectory = true,
+                LastModified = directory.LastWriteTime,
+                Parent = parent,
                 Children = new ObservableCollection<FileSystemItem>()
             };
 
@@ -187,7 +189,9 @@ namespace DISK1
                             Name = file.Name,
                             FullPath = file.FullName,
                             Size = file.Length,
-                            IsDirectory = false
+                            IsDirectory = false,
+                            LastModified = file.LastWriteTime,
+                            Parent = item
                         };
                         item.Children.Add(fileItem);
                         totalSize += file.Length;
@@ -204,7 +208,7 @@ namespace DISK1
                 {
                     try
                     {
-                        var subItem = ScanDirectory(subDir);  // 🔄 RECURSIVE CALL
+                        var subItem = ScanDirectory(subDir, item);  // 🔄 RECURSIVE CALL
                         item.Children.Add(subItem);
                         totalSize += subItem.Size;
                     }
@@ -231,6 +235,70 @@ namespace DISK1
                 txtProgressPercent.Text = $"{progress}%";
                 txtProgressInfo.Text = $"Scanning: {currentFile}";
             });
+        }
+
+
+
+        // Button: Mở file
+        private void BtnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is FileSystemItem item)
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = item.FullPath,
+                        UseShellExecute = true
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Cannot open file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        // Button: Xóa file
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is FileSystemItem item)
+            {
+                var result = MessageBox.Show($"Are you sure you want to PERMANENTLY delete '{item.Name}'?", 
+                    "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        if (item.IsDirectory)
+                        {
+                            Directory.Delete(item.FullPath, true); // Xóa folder
+                        }
+                        else
+                        {
+                            File.Delete(item.FullPath); // Xóa file
+                        }
+
+                        // Cập nhật UI: Xóa khỏi Parent
+                        if (item.Parent != null)
+                        {
+                            item.Parent.Children?.Remove(item);
+                        }
+                        else
+                        {
+                            // Nếu là Root item
+                            treeViewFiles.Items.Remove(item);
+                        }
+                        
+                        MessageBox.Show("File deleted successfully.", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Cannot delete file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
         }
 
         // Sort children by size (descending)

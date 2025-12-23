@@ -268,10 +268,14 @@
                         Style="{StaticResource DarkCardStyle}"
                         Margin="0,0,12,0">
                     <Grid>
-                        <StackPanel HorizontalAlignment="Center" 
-                                    VerticalAlignment="Center">
-                            
-                        </StackPanel>
+                        <TextBlock Text="📊 Chart Area (Coming Soon)" 
+                                   Foreground="#3E3E42"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"/>
                     </Grid>
                 </Border>
 
@@ -305,14 +309,43 @@
                                 BorderThickness="1">
                             <ScrollViewer VerticalScrollBarVisibility="Auto"
                                           HorizontalScrollBarVisibility="Auto">
-                                <TreeView x:Name="treeViewFiles"                
+                                <TreeView x:Name="treeViewFiles" 
                                           Style="{StaticResource DarkTreeViewStyle}">
                                     <TreeView.ItemTemplate>
                                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                            <TextBlock Text="{Binding DisplayName}" 
-                                                       Padding="4"
-                                                       FontSize="13"
-                                                       Foreground="#E0E0E0"/>
+                                            <Grid Margin="0,2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- File Info -->
+                                                <TextBlock Grid.Column="0" 
+                                                           Text="{Binding DisplayName}" 
+                                                           Padding="4"
+                                                           FontSize="13"
+                                                           Foreground="#E0E0E0"
+                                                           VerticalAlignment="Center">
+                                                    <TextBlock.ToolTip>
+                                                        <ToolTip Background="#2D2D30" Foreground="#E0E0E0" BorderBrush="#3E3E42">
+                                                            <StackPanel Margin="5">
+                                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#14FFEC"/>
+                                                                <TextBlock Text="{Binding FullPath}" FontStyle="Italic" Margin="0,5,0,0"/>
+                                                                <TextBlock Text="{Binding SizeFormatted, StringFormat='Size: {0}'}"/>
+                                                                <TextBlock Text="{Binding LastModified, StringFormat='Modified: {0:g}'}"/>
+                                                            </StackPanel>
+                                                        </ToolTip>
+                                                    </TextBlock.ToolTip>
+                                                </TextBlock>
+
+                                                <!-- Hover Actions -->
+                                                <StackPanel Grid.Column="1" 
+                                                            Orientation="Horizontal" 
+                                                            Margin="20,0,0,0"
+                                                            VerticalAlignment="Center"
+                                                            Visibility="Visible">
+                                                </StackPanel>
+                                            </Grid>
                                         </HierarchicalDataTemplate>
                                     </TreeView.ItemTemplate>
                                 </TreeView>
