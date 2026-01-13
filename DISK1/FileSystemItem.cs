@@ -29,6 +29,7 @@ namespace DISK1
             return $"{len:0.##} {sizes[order]}";
         }
 
+     
         public double Percentage { get; set; } = 0;
 
         public string DisplayName => IsDirectory 
